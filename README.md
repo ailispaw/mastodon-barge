@@ -7,7 +7,7 @@
 
 This repo shows how to run a Mastodon instance on [Barge](https://atlas.hashicorp.com/ailispaw/boxes/barge) with [Vagrant](https://www.vagrantup.com/) instantly.
 
-***Note: You may find `LOCAL_HTTPS=false` in `.env.provision` here, therefor, it's just for a local development and don't use this setting in the public.***
+***Note: You may find `LOCAL_HTTPS=false` in `.env.provision` here, therefor, it's just for a local test and don't use this setting in the public.***
 
 ## Requirements
 
