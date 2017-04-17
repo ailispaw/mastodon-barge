@@ -10,7 +10,16 @@ EXPOSE 3000 4000
 
 WORKDIR /mastodon
 
-RUN apk --no-cache --update add nodejs libpq libxml2 libxslt ffmpeg file imagemagick
+RUN echo "@edge https://nl.alpinelinux.org/alpine/edge/main" >> /etc/apk/repositories && \
+    apk --no-cache --update add \
+      nodejs@edge \
+      nodejs-npm@edge \
+      libpq \
+      libxml2 \
+      libxslt \
+      ffmpeg \
+      file \
+      imagemagick@edge
 
 COPY Gemfile Gemfile.lock package.json yarn.lock /mastodon/
 
@@ -18,7 +27,7 @@ RUN apk --no-cache --update add \
       --virtual build-deps postgresql-dev libxml2-dev libxslt-dev build-base && \
     npm install -g yarn && \
     bundle install --deployment --without test development && \
-    yarn && \
+    yarn --ignore-optional && \
     yarn cache clean && \
     npm -g cache clean && \
     apk del build-deps && \
