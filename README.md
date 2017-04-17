@@ -103,3 +103,54 @@ http://localhost:3000/admin/settings
 ```
 
 Cf.) https://github.com/tootsuite/documentation/blob/master/Running-Mastodon/Administration-guide.md#turning-into-an-admin
+
+## Upgrade Mastodon
+
+### Stop the instance
+
+```
+$ vagrant ssh
+[bargee@barge ~]$ cd /opt/mastodon
+[bargee@barge mastodon]$ docker-compose down
+```
+
+### Backup
+
+```
+[bargee@barge mastodon]$ cd ..
+[bargee@barge opt]$ mv mastodon mastodon.bak
+```
+
+### Upgrade this repo
+```
+$ git fetch
+$ git checkout <new version>
+```
+
+### Build a new Mastodon Docker image
+```
+$ vagrant provision --provision-with build
+```
+
+### Restore configuration files and folders
+
+```
+[bargee@barge ~]$ cd /opt/mastodon
+[bargee@barge mastodon]$ sudo cp -R ../mastodon.bak/public/assets public/
+[bargee@barge mastodon]$ sudo cp -R ../mastodon.bak/public/system public/
+[bargee@barge mastodon]$ sudo cp /vagrant/.env.production .
+```
+
+And then you have to copy the secrets from `/opt/mastodon.bak/.env.production`.
+
+### Upgrade the database and assets
+```
+$ vagrant provision --provision-with setup
+```
+
+### Restart the Mastodon instance
+```
+$ vagrant provision --provision-with mastodon
+```
+
+Cf.) https://github.com/tootsuite/documentation/blob/master/Running-Mastodon/Production-guide.md#things-to-look-out-for-when-upgrading-mastodon
