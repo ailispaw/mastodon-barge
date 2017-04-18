@@ -71,7 +71,7 @@ $ vagrant provision --provision-with setup
 $ vagrant provision --provision-with mastodon
 ```
 
-Cf.) https://github.com/tootsuite/mastodon#running-with-docker-and-docker-compose
+Cf.) https://github.com/tootsuite/mastodon/tree/v1.2#running-with-docker-and-docker-compose
 
 ## Sign up for the instance
 ```
