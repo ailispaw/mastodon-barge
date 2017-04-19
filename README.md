@@ -118,7 +118,7 @@ $ vagrant ssh
 
 ```
 [bargee@barge mastodon]$ cd ..
-[bargee@barge opt]$ mv mastodon mastodon.bak
+[bargee@barge opt]$ sudo mv mastodon mastodon.bak
 ```
 
 ### Upgrade this repo
