@@ -56,6 +56,7 @@ services:
       - ./public/system:/mastodon/public/system
 
   mailcatcher:
+    restart: always
     image: yappabe/mailcatcher
     ports:
       - "1025:1025"
