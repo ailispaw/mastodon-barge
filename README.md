@@ -14,30 +14,6 @@ This repo shows how to run a Mastodon instance on [Barge](https://atlas.hashicor
 - [VirtualBox](https://www.virtualbox.org/)
 - [Vagrant](https://www.vagrantup.com/)
 
-## Configuration
-
-You should configure SMTP server information in the `.env.provision`.
-
-```
-$ git clone https://github.com/ailispaw/mastodon-barge
-$ cd mastodon-barge
-$ <your editor> .env.provision
-```
-
-```
-# E-mail configuration
-# Note: Mailgun and SparkPost (https://sparkpo.st/smtp) each have good free tiers
-SMTP_SERVER=smtp.mailgun.org
-SMTP_PORT=587
-SMTP_LOGIN=
-SMTP_PASSWORD=
-SMTP_FROM_ADDRESS=notifications@example.com
-#SMTP_DELIVERY_METHOD=smtp # delivery method can also be sendmail
-#SMTP_AUTH_METHOD=plain
-#SMTP_OPENSSL_VERIFY_MODE=peer
-#SMTP_ENABLE_STARTTLS_AUTO=true
-```
-
 ## Boot up
 
 ```
