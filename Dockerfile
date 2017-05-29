@@ -24,7 +24,7 @@ RUN echo "@edge https://nl.alpinelinux.org/alpine/edge/main" >> /etc/apk/reposit
       nodejs@edge \
       protobuf \
       tini \
- && rm -rf /tmp/*
+ && rm -rf /tmp/* /var/cache/apk/*
 
 COPY Gemfile Gemfile.lock package.json yarn.lock /mastodon/
 
@@ -42,7 +42,8 @@ RUN apk --no-cache --update add --virtual build-deps \
  && yarn cache clean \
  && npm -g cache clean \
  && apk del build-deps \
- && rm -rf /tmp/*
+ && rm -rf /root/.bundle /root/.gem /root/.node-gyp \
+ && rm -rf /tmp/* /var/cache/apk/*
 
 COPY . /mastodon
 
