@@ -8,7 +8,7 @@ module VagrantPlugins
   end
 end
 
-MASTODON_VERSION = "1.3.3"
+MASTODON_VERSION = "1.4.1"
 
 Vagrant.configure(2) do |config|
   config.vm.define "mastodon-barge"
