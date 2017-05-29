@@ -57,6 +57,11 @@ http://localhost:3000/
 ## Login to the instance
 
 You will receive a confirmation email to activate your account and click a link in the email.
+
+```
+http://localhost:1080/
+```
+
 Or you can authorize yourself manually from your local console as below, just in case of missing the email or whatever.
 
 ```
