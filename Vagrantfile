@@ -8,8 +8,6 @@ module VagrantPlugins
   end
 end
 
-MASTODON_VERSION = "1.4.1"
-
 Vagrant.configure(2) do |config|
   config.vm.define "mastodon-barge"
 
@@ -25,22 +23,15 @@ Vagrant.configure(2) do |config|
     sh.inline = <<-EOT
       set -e
 
-      if [ ! -d /opt/mastodon ]; then
-        cd /opt
-        wget -q https://github.com/tootsuite/mastodon/archive/v#{MASTODON_VERSION}.tar.gz
-        tar xzf v#{MASTODON_VERSION}.tar.gz
-        mv mastodon-#{MASTODON_VERSION} mastodon
-        rm -f v#{MASTODON_VERSION}.tar.gz
-      fi
-
       if [ ! -f /opt/bin/docker-compose ]; then
         wget -q -O /opt/bin/docker-compose \
           https://github.com/docker/compose/releases/download/1.13.0/docker-compose-Linux-x86_64
         chmod +x /opt/bin/docker-compose
       fi
 
+      mkdir -p /opt/mastodon
       cd /opt/mastodon
-      cp .env.production.sample .env.production
+      cp /vagrant/.env.production .
       cp /vagrant/docker-compose.yml .
       cp /vagrant/Dockerfile .
       docker-compose build
