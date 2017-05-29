@@ -3,8 +3,7 @@ FROM ruby:2.4.1-alpine
 LABEL maintainer="https://github.com/ailispaw/mastodon" \
       description="A GNU Social-compatible microblogging server"
 
-ENV UID=991 GID=991 \
-    RAILS_SERVE_STATIC_FILES=true \
+ENV RAILS_SERVE_STATIC_FILES=true \
     RAILS_ENV=production NODE_ENV=production
 
 EXPOSE 3000 4000
@@ -24,7 +23,6 @@ RUN echo "@edge https://nl.alpinelinux.org/alpine/edge/main" >> /etc/apk/reposit
       nodejs-npm@edge \
       nodejs@edge \
       protobuf \
-      su-exec \
       tini \
  && rm -rf /tmp/*
 
@@ -48,10 +46,14 @@ RUN apk --no-cache --update add --virtual build-deps \
 
 COPY . /mastodon
 
-COPY docker_entrypoint.sh /usr/local/bin/run
+ENV UID=1000 GID=1000
 
-RUN chmod +x /usr/local/bin/run
+RUN addgroup -g ${GID} mastodon \
+ && adduser -h /mastodon -s /bin/sh -D -G mastodon -u ${UID} mastodon \
+ && chown -R mastodon:mastodon /mastodon
 
 VOLUME /mastodon/public/system /mastodon/public/assets /mastodon/public/packs
 
-ENTRYPOINT [ "/usr/local/bin/run" ]
+USER mastodon
+
+ENTRYPOINT [ "/sbin/tini", "--" ]

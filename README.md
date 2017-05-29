@@ -114,7 +114,6 @@ $ vagrant provision --provision-with build
 [bargee@barge ~]$ cd /opt/mastodon
 [bargee@barge mastodon]$ sudo cp -R ../mastodon.bak/public/assets public/
 [bargee@barge mastodon]$ sudo cp -R ../mastodon.bak/public/system public/
-[bargee@barge mastodon]$ sudo chown -R 991:991 public/system/ # for v1.4 only
 [bargee@barge mastodon]$ sudo cp /vagrant/.env.production .
 ```
 
