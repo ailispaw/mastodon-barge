@@ -39,25 +39,27 @@ RUN apk --no-cache --update add --virtual build-deps \
       postgresql-dev \
       protobuf-dev \
       python \
+      su-exec \
     \
  && curl -sL https://github.com/tootsuite/mastodon/archive/v${MASTODON_VERSION}.tar.gz | tar xz -C / \
  && mv /mastodon-${MASTODON_VERSION} /mastodon \
  && cd /mastodon \
  && rm -rf .env.* storybook \
     \
- && bundle install --deployment --without test development \
- && yarn --ignore-optional --pure-lockfile \
-    \
- && yarn cache clean \
- && bundle clean \
- && npm -g cache clean \
- && apk del build-deps \
- && rm -rf /root/.bundle /root/.gem /root/.node-gyp /root/.npm \
- && rm -rf /tmp/* /var/cache/apk/* \
-    \
  && addgroup -g ${GID} mastodon \
  && adduser -h /mastodon -s /bin/sh -D -G mastodon -u ${UID} mastodon \
- && chown -R mastodon:mastodon .
+ && chown -R mastodon:mastodon . \
+    \
+ && su-exec mastodon:mastodon bundle install --deployment --without test development \
+ && su-exec mastodon:mastodon yarn --ignore-optional --pure-lockfile \
+    \
+ && su-exec mastodon:mastodon yarn cache clean \
+ && su-exec mastodon:mastodon bundle clean \
+ && su-exec mastodon:mastodon npm -g cache clean \
+ && su-exec mastodon:mastodon rm -rf .bundle .cache .node-gyp \
+    \
+ && apk del build-deps \
+ && rm -rf /tmp/* /var/cache/apk/*
 
 VOLUME /mastodon/public/system /mastodon/public/assets /mastodon/public/packs
 
