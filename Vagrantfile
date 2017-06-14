@@ -69,8 +69,10 @@ Vagrant.configure(2) do |config|
       mkdir -p public/packs
       chown -R 1000:1000 public/packs
 
+      docker-compose run --rm web rails mastodon:maintenance:prepare_for_foreign_keys
       docker-compose run --rm web rails db:migrate
       docker-compose run --rm web rails assets:precompile
+      docker-compose run --rm web rails r Rails.cache.clear
     EOT
   end
 
