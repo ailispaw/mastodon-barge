@@ -26,7 +26,7 @@ RUN echo "@edge https://nl.alpinelinux.org/alpine/edge/main" >> /etc/apk/reposit
  && npm -g cache clean \
  && rm -rf /tmp/* /var/cache/apk/*
 
-ENV MASTODON_VERSION=1.4.2 \
+ENV MASTODON_VERSION=1.4.3 \
     UID=1000 GID=1000 \
     RAILS_SERVE_STATIC_FILES=true \
     RAILS_ENV=production NODE_ENV=production
