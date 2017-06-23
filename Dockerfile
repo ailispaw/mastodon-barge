@@ -6,6 +6,7 @@ LABEL maintainer="https://github.com/ailispaw/mastodon" \
 EXPOSE 3000 4000
 
 RUN echo "@edge https://nl.alpinelinux.org/alpine/edge/main" >> /etc/apk/repositories \
+ && apk -U upgrade \
  && apk --no-cache --update add \
       ca-certificates \
       ffmpeg \
@@ -26,7 +27,7 @@ RUN echo "@edge https://nl.alpinelinux.org/alpine/edge/main" >> /etc/apk/reposit
  && npm -g cache clean \
  && rm -rf /tmp/* /var/cache/apk/*
 
-ENV MASTODON_VERSION=1.4.4 \
+ENV MASTODON_VERSION=1.4.5 \
     UID=1000 GID=1000 \
     RAILS_SERVE_STATIC_FILES=true \
     RAILS_ENV=production NODE_ENV=production
