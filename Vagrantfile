@@ -53,6 +53,8 @@ Vagrant.configure(2) do |config|
 
       OTP_SECRET=$(docker-compose run --rm web rake secret)
       sed -i 's/^OTP_SECRET=$/OTP_SECRET='${OTP_SECRET}'/g' .env.production
+
+      docker-compose run --rm web rake mastodon:webpush:generate_vapid_key >> .env.production
     EOT
   end
 

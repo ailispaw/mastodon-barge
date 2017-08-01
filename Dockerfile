@@ -6,13 +6,16 @@ LABEL maintainer="https://github.com/ailispaw/mastodon" \
 EXPOSE 3000 4000
 
 RUN echo "@edge https://nl.alpinelinux.org/alpine/edge/main" >> /etc/apk/repositories \
+ && echo "@edge https://nl.alpinelinux.org/alpine/edge/community" >> /etc/apk/repositories \
  && apk -U upgrade \
  && apk --no-cache --update add \
       ca-certificates \
       ffmpeg \
       file \
       git \
+      icu-libs \
       imagemagick@edge \
+      libidn \
       libpq \
       libxml2 \
       libxslt \
@@ -20,14 +23,13 @@ RUN echo "@edge https://nl.alpinelinux.org/alpine/edge/main" >> /etc/apk/reposit
       nodejs@edge \
       protobuf \
       tini \
+      yarn@edge \
     \
- && npm install -g yarn \
  && update-ca-certificates \
     \
- && npm -g cache clean \
  && rm -rf /tmp/* /var/cache/apk/*
 
-ENV MASTODON_VERSION=1.4.7 \
+ENV MASTODON_VERSION=1.5.0 \
     UID=1000 GID=1000 \
     RAILS_SERVE_STATIC_FILES=true \
     RAILS_ENV=production NODE_ENV=production
@@ -35,6 +37,8 @@ ENV MASTODON_VERSION=1.4.7 \
 RUN apk --no-cache --update add --virtual build-deps \
       build-base \
       curl \
+      icu-dev \
+      libidn-dev \
       libxml2-dev \
       libxslt-dev \
       postgresql-dev \
