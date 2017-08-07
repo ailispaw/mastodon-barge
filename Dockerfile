@@ -17,8 +17,6 @@ RUN echo "@edge https://nl.alpinelinux.org/alpine/edge/main" >> /etc/apk/reposit
       imagemagick@edge \
       libidn \
       libpq \
-      libxml2 \
-      libxslt \
       nodejs-npm@edge \
       nodejs@edge \
       protobuf \
@@ -29,22 +27,34 @@ RUN echo "@edge https://nl.alpinelinux.org/alpine/edge/main" >> /etc/apk/reposit
     \
  && rm -rf /tmp/* /var/cache/apk/*
 
-ENV MASTODON_VERSION=1.5.0 \
+ENV MASTODON_VERSION=1.5.1 \
     UID=1000 GID=1000 \
     RAILS_SERVE_STATIC_FILES=true \
-    RAILS_ENV=production NODE_ENV=production
+    RAILS_ENV=production NODE_ENV=production \
+    LIBICONV_VERSION=1.15 \
+    LIBICONV_DOWNLOAD_SHA256=ccf536620a45458d26ba83887a983b96827001e92a13847b45e4925cc8913178
 
 RUN apk --no-cache --update add --virtual build-deps \
       build-base \
       curl \
       icu-dev \
       libidn-dev \
-      libxml2-dev \
-      libxslt-dev \
+      libtool \
       postgresql-dev \
       protobuf-dev \
       python \
       su-exec \
+    \
+ && wget -O libiconv.tar.gz http://ftp.gnu.org/pub/gnu/libiconv/libiconv-${LIBICONV_VERSION}.tar.gz \
+ && echo "${LIBICONV_DOWNLOAD_SHA256} *libiconv.tar.gz" | sha256sum -c - \
+ && mkdir -p /tmp/src \
+ && tar -xzf libiconv.tar.gz -C /tmp/src \
+ && rm libiconv.tar.gz \
+ && cd /tmp/src/libiconv-${LIBICONV_VERSION} \
+ && ./configure --prefix=/usr/local \
+ && make \
+ && make install \
+ && libtool --finish /usr/local/lib \
     \
  && curl -sL https://github.com/tootsuite/mastodon/archive/v${MASTODON_VERSION}.tar.gz | tar xz -C / \
  && mv /mastodon-${MASTODON_VERSION} /mastodon \

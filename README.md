@@ -124,9 +124,9 @@ $ vagrant provision --provision-with build
 And then you have to copy the secrets from `/opt/mastodon.bak/.env.production`.
 
 ### Upgrade the database and assets
-```
-$ vagrant provision --provision-with setup
-```
+
+Follow an upgrade instruction in the release notes.
+https://github.com/tootsuite/mastodon/releases
 
 ### Restart the Mastodon instance
 ```
