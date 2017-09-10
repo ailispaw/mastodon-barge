@@ -1,33 +1,31 @@
-FROM ruby:2.4.1-alpine
+FROM ruby:2.4.1-alpine3.6
 
 LABEL maintainer="https://github.com/ailispaw/mastodon" \
       description="A GNU Social-compatible microblogging server"
 
 EXPOSE 3000 4000
 
-RUN echo "@edge https://nl.alpinelinux.org/alpine/edge/main" >> /etc/apk/repositories \
- && echo "@edge https://nl.alpinelinux.org/alpine/edge/community" >> /etc/apk/repositories \
- && apk -U upgrade \
+RUN apk -U upgrade \
  && apk --no-cache --update add \
       ca-certificates \
       ffmpeg \
       file \
       git \
       icu-libs \
-      imagemagick@edge \
+      imagemagick \
       libidn \
       libpq \
-      nodejs-npm@edge \
-      nodejs@edge \
+      nodejs-npm \
+      nodejs \
       protobuf \
       tini \
-      yarn@edge \
+      yarn \
     \
  && update-ca-certificates \
     \
  && rm -rf /tmp/* /var/cache/apk/*
 
-ENV MASTODON_VERSION=1.5.1 \
+ENV MASTODON_VERSION=1.6.0 \
     UID=1000 GID=1000 \
     RAILS_SERVE_STATIC_FILES=true \
     RAILS_ENV=production NODE_ENV=production \
@@ -52,7 +50,7 @@ RUN apk --no-cache --update add --virtual build-deps \
  && rm libiconv.tar.gz \
  && cd /tmp/src/libiconv-${LIBICONV_VERSION} \
  && ./configure --prefix=/usr/local \
- && make \
+ && make -j$(getconf _NPROCESSORS_ONLN) \
  && make install \
  && libtool --finish /usr/local/lib \
     \
@@ -65,7 +63,7 @@ RUN apk --no-cache --update add --virtual build-deps \
  && adduser -h /mastodon -s /bin/sh -D -G mastodon -u ${UID} mastodon \
  && chown -R mastodon:mastodon . \
     \
- && su-exec mastodon:mastodon bundle install --deployment --without test development \
+ && su-exec mastodon:mastodon bundle install -j$(getconf _NPROCESSORS_ONLN) --deployment --without test development \
  && su-exec mastodon:mastodon yarn --ignore-optional --pure-lockfile \
     \
  && su-exec mastodon:mastodon yarn cache clean \
