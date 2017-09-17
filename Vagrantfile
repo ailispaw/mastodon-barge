@@ -73,7 +73,7 @@ Vagrant.configure(2) do |config|
 
       docker-compose run --rm web rails db:migrate
       docker-compose run --rm web rails assets:precompile
-      docker-compose run --rm web rails mastodon:maintenance:remove_deprecated_preview_cards
+      #docker-compose run --rm web rails mastodon:maintenance:remove_deprecated_preview_cards
     EOT
   end
 
