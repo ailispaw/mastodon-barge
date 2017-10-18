@@ -1,4 +1,4 @@
-FROM ruby:2.4.1-alpine3.6
+FROM ruby:2.4.2-alpine3.6
 
 LABEL maintainer="https://github.com/ailispaw/mastodon" \
       description="A GNU Social-compatible microblogging server"
@@ -15,20 +15,21 @@ RUN apk -U upgrade \
       imagemagick \
       libidn \
       libpq \
-      nodejs-npm \
       nodejs \
+      nodejs-npm \
       protobuf \
       tini \
-      yarn \
     \
  && update-ca-certificates \
     \
  && rm -rf /tmp/* /var/cache/apk/*
 
-ENV MASTODON_VERSION=1.6.1 \
+ENV MASTODON_VERSION=2.0.0 \
     UID=1000 GID=1000 \
     RAILS_SERVE_STATIC_FILES=true \
     RAILS_ENV=production NODE_ENV=production \
+    YARN_VERSION=1.1.0 \
+    YARN_DOWNLOAD_SHA256=171c1f9ee93c488c0d774ac6e9c72649047c3f896277d88d0f805266519430f3 \
     LIBICONV_VERSION=1.15 \
     LIBICONV_DOWNLOAD_SHA256=ccf536620a45458d26ba83887a983b96827001e92a13847b45e4925cc8913178
 
@@ -37,15 +38,22 @@ RUN apk --no-cache --update add --virtual build-deps \
       curl \
       icu-dev \
       libidn-dev \
+      libressl \
       libtool \
       postgresql-dev \
       protobuf-dev \
       python \
       su-exec \
     \
+ && mkdir -p /tmp/src /opt \
+ && wget -O yarn.tar.gz "https://github.com/yarnpkg/yarn/releases/download/v$YARN_VERSION/yarn-v$YARN_VERSION.tar.gz" \
+ && echo "$YARN_DOWNLOAD_SHA256 *yarn.tar.gz" | sha256sum -c - \
+ && tar -xzf yarn.tar.gz -C /tmp/src \
+ && rm yarn.tar.gz \
+ && mv /tmp/src/yarn-v$YARN_VERSION /opt/yarn \
+ && ln -s /opt/yarn/bin/yarn /usr/local/bin/yarn \
  && wget -O libiconv.tar.gz http://ftp.gnu.org/pub/gnu/libiconv/libiconv-${LIBICONV_VERSION}.tar.gz \
  && echo "${LIBICONV_DOWNLOAD_SHA256} *libiconv.tar.gz" | sha256sum -c - \
- && mkdir -p /tmp/src \
  && tar -xzf libiconv.tar.gz -C /tmp/src \
  && rm libiconv.tar.gz \
  && cd /tmp/src/libiconv-${LIBICONV_VERSION} \
@@ -64,7 +72,7 @@ RUN apk --no-cache --update add --virtual build-deps \
  && chown -R mastodon:mastodon . \
     \
  && su-exec mastodon:mastodon bundle install -j$(getconf _NPROCESSORS_ONLN) --deployment --without test development \
- && su-exec mastodon:mastodon yarn --ignore-optional --pure-lockfile \
+ && su-exec mastodon:mastodon yarn --pure-lockfile \
     \
  && su-exec mastodon:mastodon yarn cache clean \
  && su-exec mastodon:mastodon bundle clean \
