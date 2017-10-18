@@ -25,7 +25,7 @@ Vagrant.configure(2) do |config|
 
       if [ ! -f /opt/bin/docker-compose ]; then
         wget -q -O /opt/bin/docker-compose \
-          https://github.com/docker/compose/releases/download/1.13.0/docker-compose-Linux-x86_64
+          https://github.com/docker/compose/releases/download/1.16.1/docker-compose-Linux-x86_64
         chmod +x /opt/bin/docker-compose
       fi
 
