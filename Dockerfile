@@ -24,12 +24,12 @@ RUN apk -U upgrade \
     \
  && rm -rf /tmp/* /var/cache/apk/*
 
-ENV MASTODON_VERSION=2.0.0 \
+ENV MASTODON_VERSION=2.1.0 \
     UID=1000 GID=1000 \
     RAILS_SERVE_STATIC_FILES=true \
     RAILS_ENV=production NODE_ENV=production \
-    YARN_VERSION=1.1.0 \
-    YARN_DOWNLOAD_SHA256=171c1f9ee93c488c0d774ac6e9c72649047c3f896277d88d0f805266519430f3 \
+    YARN_VERSION=1.3.2 \
+    YARN_DOWNLOAD_SHA256=6cfe82e530ef0837212f13e45c1565ba53f5199eec2527b85ecbcd88bf26821d \
     LIBICONV_VERSION=1.15 \
     LIBICONV_DOWNLOAD_SHA256=ccf536620a45458d26ba83887a983b96827001e92a13847b45e4925cc8913178
 
@@ -52,7 +52,7 @@ RUN apk --no-cache --update add --virtual build-deps \
  && rm yarn.tar.gz \
  && mv /tmp/src/yarn-v$YARN_VERSION /opt/yarn \
  && ln -s /opt/yarn/bin/yarn /usr/local/bin/yarn \
- && wget -O libiconv.tar.gz http://ftp.gnu.org/pub/gnu/libiconv/libiconv-${LIBICONV_VERSION}.tar.gz \
+ && wget -O libiconv.tar.gz https://ftp.gnu.org/pub/gnu/libiconv/libiconv-${LIBICONV_VERSION}.tar.gz \
  && echo "${LIBICONV_DOWNLOAD_SHA256} *libiconv.tar.gz" | sha256sum -c - \
  && tar -xzf libiconv.tar.gz -C /tmp/src \
  && rm libiconv.tar.gz \
