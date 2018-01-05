@@ -1,0 +1,50 @@
+From 88f755d075033cc5c31abda2e40f65460424eb35 Mon Sep 17 00:00:00 2001
+From: "A.I" <ailis@paw.zone>
+Date: Sat, 6 Jan 2018 10:42:56 -0800
+Subject: [PATCH] Revert "enforce LOCAL_HTTPS=true in production (#6061)"
+
+This reverts commit 9592b5e31e19ce470252ade7b8df73625e2592e6.
+---
+ .env.production.sample         | 5 ++---
+ config/initializers/ostatus.rb | 3 +--
+ 2 files changed, 3 insertions(+), 5 deletions(-)
+
+diff --git a/.env.production.sample b/.env.production.sample
+index 3f0edd72..91fcce6a 100644
+--- a/.env.production.sample
++++ b/.env.production.sample
+@@ -11,11 +11,10 @@ DB_PASS=
+ DB_PORT=5432
+ 
+ # Federation
+-# Note: Changing LOCAL_DOMAIN at a later time will cause unwanted side effects, including breaking all existing federation.
++# Note: Changing LOCAL_DOMAIN or LOCAL_HTTPS at a later time will cause unwanted side effects.
+ # LOCAL_DOMAIN should *NOT* contain the protocol part of the domain e.g https://example.com.
+ LOCAL_DOMAIN=example.com 
+-
+-# Changing LOCAL_HTTPS in production is no longer supported. (Mastodon will always serve https:// links)
++LOCAL_HTTPS=true
+ 
+ # Use this only if you need to run mastodon on a different domain than the one used for federation.
+ # You can read more about this option on https://github.com/tootsuite/documentation/blob/master/Running-Mastodon/Serving_a_different_domain.md
+diff --git a/config/initializers/ostatus.rb b/config/initializers/ostatus.rb
+index 5773b729..bb8591f7 100644
+--- a/config/initializers/ostatus.rb
++++ b/config/initializers/ostatus.rb
+@@ -3,12 +3,11 @@
+ port     = ENV.fetch('PORT') { 3000 }
+ host     = ENV.fetch('LOCAL_DOMAIN') { "localhost:#{port}" }
+ web_host = ENV.fetch('WEB_DOMAIN') { host }
++https    = ENV['LOCAL_HTTPS'] == 'true'
+ 
+ alternate_domains = ENV.fetch('ALTERNATE_DOMAINS') { '' }
+ 
+ Rails.application.configure do
+-  https    = Rails.env.production? || ENV['LOCAL_HTTPS'] == 'true'
+-
+   config.x.local_domain = host
+   config.x.web_domain   = web_host
+   config.x.use_https    = https
+-- 
+2.14.1
+

@@ -34,6 +34,7 @@ Vagrant.configure(2) do |config|
       cp /vagrant/.env.production .
       cp /vagrant/docker-compose.yml .
       cp /vagrant/Dockerfile .
+      cp -R /vagrant/patches .
       docker-compose build
     EOT
   end

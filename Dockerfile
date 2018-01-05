@@ -24,7 +24,7 @@ RUN apk -U upgrade \
     \
  && rm -rf /tmp/* /var/cache/apk/*
 
-ENV MASTODON_VERSION=2.1.0 \
+ENV MASTODON_VERSION=2.1.2 \
     UID=1000 GID=1000 \
     RAILS_SERVE_STATIC_FILES=true \
     RAILS_ENV=production NODE_ENV=production \
@@ -32,6 +32,9 @@ ENV MASTODON_VERSION=2.1.0 \
     YARN_DOWNLOAD_SHA256=6cfe82e530ef0837212f13e45c1565ba53f5199eec2527b85ecbcd88bf26821d \
     LIBICONV_VERSION=1.15 \
     LIBICONV_DOWNLOAD_SHA256=ccf536620a45458d26ba83887a983b96827001e92a13847b45e4925cc8913178
+
+# Apply patches
+COPY patches /patches
 
 RUN apk --no-cache --update add --virtual build-deps \
       build-base \
@@ -44,6 +47,7 @@ RUN apk --no-cache --update add --virtual build-deps \
       protobuf-dev \
       python \
       su-exec \
+      patch \
     \
  && mkdir -p /tmp/src /opt \
  && wget -O yarn.tar.gz "https://github.com/yarnpkg/yarn/releases/download/v$YARN_VERSION/yarn-v$YARN_VERSION.tar.gz" \
@@ -65,6 +69,9 @@ RUN apk --no-cache --update add --virtual build-deps \
  && curl -sL https://github.com/tootsuite/mastodon/archive/v${MASTODON_VERSION}.tar.gz | tar xz -C / \
  && mv /mastodon-${MASTODON_VERSION} /mastodon \
  && cd /mastodon \
+ && for patch in /patches/*.patch; do \
+      patch -p1 -d /mastodon < ${patch}; \
+    done \
  && rm -rf .env.* storybook \
     \
  && addgroup -g ${GID} mastodon \
