@@ -1,6 +1,6 @@
 FROM ruby:2.4.2-alpine3.6
 
-LABEL maintainer="https://github.com/ailispaw/mastodon" \
+LABEL maintainer="https://github.com/ailispaw/mastodon-barge" \
       description="A GNU Social-compatible microblogging server"
 
 EXPOSE 3000 4000
