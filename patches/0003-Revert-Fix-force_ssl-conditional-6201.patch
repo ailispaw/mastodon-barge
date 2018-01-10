@@ -1,0 +1,76 @@
+From a95e22d3b06f5d9d5abf963cff3346d471015083 Mon Sep 17 00:00:00 2001
+From: "A.I" <ailis@paw.zone>
+Date: Tue, 9 Jan 2018 19:09:49 -0800
+Subject: [PATCH] Revert "Fix force_ssl conditional (#6201)"
+
+This reverts commit 1d92b90be9f494d90a6f79f53be9cca68562867e.
+---
+ app/controllers/application_controller.rb       |  2 +-
+ spec/controllers/application_controller_spec.rb | 20 ++++++++++++--------
+ spec/rails_helper.rb                            |  2 +-
+ 3 files changed, 14 insertions(+), 10 deletions(-)
+
+diff --git a/app/controllers/application_controller.rb b/app/controllers/application_controller.rb
+index e1aae0b6..dae1804c 100644
+--- a/app/controllers/application_controller.rb
++++ b/app/controllers/application_controller.rb
+@@ -30,7 +30,7 @@ class ApplicationController < ActionController::Base
+   private
+ 
+   def https_enabled?
+-    Rails.env.production?
++    Rails.env.production? && ENV['LOCAL_HTTPS'] == 'true'
+   end
+ 
+   def store_current_location
+diff --git a/spec/controllers/application_controller_spec.rb b/spec/controllers/application_controller_spec.rb
+index 51c0e3c7..6a54a78c 100644
+--- a/spec/controllers/application_controller_spec.rb
++++ b/spec/controllers/application_controller_spec.rb
+@@ -47,18 +47,22 @@ describe ApplicationController, type: :controller do
+     include_examples 'respond_with_error', 422
+   end
+ 
+-  it "does not force ssl if Rails.env.production? is not 'true'" do
++  it "does not force ssl if LOCAL_HTTPS is not 'true'" do
+     routes.draw { get 'success' => 'anonymous#success' }
+-    allow(Rails.env).to receive(:production?).and_return(false)
+-    get 'success'
+-    expect(response).to have_http_status(:success)
++    ClimateControl.modify LOCAL_HTTPS: '' do
++      allow(Rails.env).to receive(:production?).and_return(true)
++      get 'success'
++      expect(response).to have_http_status(:success)
++    end
+   end
+ 
+-  it "forces ssl if Rails.env.production? is 'true'" do
++  it "forces ssl if LOCAL_HTTPS is 'true'" do
+     routes.draw { get 'success' => 'anonymous#success' }
+-    allow(Rails.env).to receive(:production?).and_return(true)
+-    get 'success'
+-    expect(response).to redirect_to('https://test.host/success')
++    ClimateControl.modify LOCAL_HTTPS: 'true' do
++      allow(Rails.env).to receive(:production?).and_return(true)
++      get 'success'
++      expect(response).to redirect_to('https://test.host/success')
++    end
+   end
+ 
+   describe 'helper_method :current_account' do
+diff --git a/spec/rails_helper.rb b/spec/rails_helper.rb
+index 4f739950..67c6b920 100644
+--- a/spec/rails_helper.rb
++++ b/spec/rails_helper.rb
+@@ -46,7 +46,7 @@ RSpec.configure do |config|
+   config.include ActiveSupport::Testing::TimeHelpers
+ 
+   config.before :each, type: :feature do
+-    https = ENV['LOCAL_HTTPS'] == 'true'
++    https = Rails.env.production? || ENV['LOCAL_HTTPS'] == 'true'
+     Capybara.app_host = "http#{https ? 's' : ''}://#{ENV.fetch('LOCAL_DOMAIN')}"
+   end
+ 
+-- 
+2.14.1
+

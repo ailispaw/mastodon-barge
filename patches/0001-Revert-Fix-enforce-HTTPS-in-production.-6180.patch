@@ -1,4 +1,4 @@
-From 7cdd9b67e8e8526fe6439a7b36515b404529bfa3 Mon Sep 17 00:00:00 2001
+From aa38a65005cc209a7175156c8395ab7e7b873619 Mon Sep 17 00:00:00 2001
 From: "A.I" <ailis@paw.zone>
 Date: Sat, 6 Jan 2018 10:42:09 -0800
 Subject: [PATCH] Revert "Fix enforce HTTPS in production. (#6180)"
@@ -6,8 +6,7 @@ Subject: [PATCH] Revert "Fix enforce HTTPS in production. (#6180)"
 This reverts commit 8d51ce429094d43a91d61c9cb0c0dc7b1e6bd2de.
 ---
  config/initializers/session_store.rb | 2 +-
- spec/rails_helper.rb                 | 2 +-
- 2 files changed, 2 insertions(+), 2 deletions(-)
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
 diff --git a/config/initializers/session_store.rb b/config/initializers/session_store.rb
 index 3dc0edd6..ef61543a 100644
@@ -18,19 +17,6 @@ index 3dc0edd6..ef61543a 100644
  
 -Rails.application.config.session_store :cookie_store, key: '_mastodon_session', secure: (Rails.env.production? || ENV['LOCAL_HTTPS'] == 'true')
 +Rails.application.config.session_store :cookie_store, key: '_mastodon_session', secure: (ENV['LOCAL_HTTPS'] == 'true')
-diff --git a/spec/rails_helper.rb b/spec/rails_helper.rb
-index 67c6b920..4f739950 100644
---- a/spec/rails_helper.rb
-+++ b/spec/rails_helper.rb
-@@ -46,7 +46,7 @@ RSpec.configure do |config|
-   config.include ActiveSupport::Testing::TimeHelpers
- 
-   config.before :each, type: :feature do
--    https = Rails.env.production? || ENV['LOCAL_HTTPS'] == 'true'
-+    https = ENV['LOCAL_HTTPS'] == 'true'
-     Capybara.app_host = "http#{https ? 's' : ''}://#{ENV.fetch('LOCAL_DOMAIN')}"
-   end
- 
 -- 
 2.14.1
 

@@ -1,4 +1,4 @@
-From 88f755d075033cc5c31abda2e40f65460424eb35 Mon Sep 17 00:00:00 2001
+From d3892ebd5edbc9b8e26ed9c24ef83e5bdc407541 Mon Sep 17 00:00:00 2001
 From: "A.I" <ailis@paw.zone>
 Date: Sat, 6 Jan 2018 10:42:56 -0800
 Subject: [PATCH] Revert "enforce LOCAL_HTTPS=true in production (#6061)"
