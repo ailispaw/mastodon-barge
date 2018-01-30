@@ -54,6 +54,7 @@ services:
       - redis
       - mailcatcher
     volumes:
+      - ./public/packs:/mastodon/public/packs
       - ./public/system:/mastodon/public/system
 
   mailcatcher:

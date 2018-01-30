@@ -1,4 +1,4 @@
-FROM ruby:2.4.2-alpine3.6
+FROM ruby:2.5.0-alpine3.7
 
 LABEL maintainer="https://github.com/ailispaw/mastodon-barge" \
       description="A GNU Social-compatible microblogging server"
@@ -19,12 +19,13 @@ RUN apk -U upgrade \
       nodejs-npm \
       protobuf \
       tini \
+      tzdata \
     \
  && update-ca-certificates \
     \
  && rm -rf /tmp/* /var/cache/apk/*
 
-ENV MASTODON_VERSION=2.1.3 \
+ENV MASTODON_VERSION=2.2.0 \
     UID=1000 GID=1000 \
     RAILS_SERVE_STATIC_FILES=true \
     RAILS_ENV=production NODE_ENV=production \
@@ -83,7 +84,7 @@ RUN apk --no-cache --update add --virtual build-deps \
     \
  && su-exec mastodon:mastodon yarn cache clean \
  && su-exec mastodon:mastodon bundle clean \
- && su-exec mastodon:mastodon npm -g cache clean \
+ && su-exec mastodon:mastodon npm -g cache clean --force \
  && su-exec mastodon:mastodon rm -rf .bundle .cache .node-gyp \
     \
  && apk del build-deps \
