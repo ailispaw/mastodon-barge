@@ -1,7 +1,7 @@
 FROM ruby:2.5.0-alpine3.7
 
 LABEL maintainer="https://github.com/ailispaw/mastodon-barge" \
-      description="A GNU Social-compatible microblogging server"
+      description="Your self-hosted, globally interconnected microblogging community"
 
 EXPOSE 3000 4000
 
@@ -16,7 +16,6 @@ RUN apk -U upgrade \
       libidn \
       libpq \
       nodejs \
-      nodejs-npm \
       protobuf \
       tini \
       tzdata \
@@ -25,12 +24,12 @@ RUN apk -U upgrade \
     \
  && rm -rf /tmp/* /var/cache/apk/*
 
-ENV MASTODON_VERSION=2.2.0 \
+ENV MASTODON_VERSION=2.3.0 \
     UID=1000 GID=1000 \
     RAILS_SERVE_STATIC_FILES=true \
     RAILS_ENV=production NODE_ENV=production \
-    YARN_VERSION=1.3.2 \
-    YARN_DOWNLOAD_SHA256=6cfe82e530ef0837212f13e45c1565ba53f5199eec2527b85ecbcd88bf26821d \
+    YARN_VERSION=1.5.1 \
+    YARN_DOWNLOAD_SHA256=cd31657232cf48d57fdbff55f38bfa058d2fb4950450bd34af72dac796af4de1 \
     LIBICONV_VERSION=1.15 \
     LIBICONV_DOWNLOAD_SHA256=ccf536620a45458d26ba83887a983b96827001e92a13847b45e4925cc8913178
 
