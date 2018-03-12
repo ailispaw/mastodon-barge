@@ -19,15 +19,21 @@ Vagrant.configure(2) do |config|
   config.vm.network :forwarded_port, guest: 4000, host: 4000
   config.vm.network :forwarded_port, guest: 1080, host: 1080
 
-  config.vm.provision "build", type: "shell" do |sh|
+  config.vm.provision "init", type: "shell" do |sh|
     sh.inline = <<-EOT
       set -e
 
-      if [ ! -f /opt/bin/docker-compose ]; then
-        wget -q -O /opt/bin/docker-compose \
-          https://github.com/docker/compose/releases/download/1.18.0/docker-compose-Linux-x86_64
-        chmod +x /opt/bin/docker-compose
-      fi
+      wget -q -O /opt/bin/docker-compose \
+        https://github.com/docker/compose/releases/download/1.19.0/docker-compose-Linux-x86_64
+      chmod +x /opt/bin/docker-compose
+
+      /etc/init.d/docker restart v17.12.1-ce
+    EOT
+  end
+
+  config.vm.provision "build", type: "shell" do |sh|
+    sh.inline = <<-EOT
+      set -e
 
       mkdir -p /opt/mastodon
       cd /opt/mastodon
