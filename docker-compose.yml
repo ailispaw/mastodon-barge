@@ -86,6 +86,7 @@ services:
     image: yappabe/mailcatcher
     restart: always
     networks:
+      - external_network
       - internal_network
     ports:
       - "1025:1025"
