@@ -10,7 +10,6 @@ RUN apk -U upgrade \
       ca-certificates \
       ffmpeg \
       file \
-      git \
       icu-libs \
       imagemagick \
       libidn \
@@ -19,17 +18,16 @@ RUN apk -U upgrade \
       protobuf \
       tini \
       tzdata \
+      yarn \
     \
  && update-ca-certificates \
     \
  && rm -rf /tmp/* /var/cache/apk/*
 
-ENV MASTODON_VERSION=2.3.0 \
+ENV MASTODON_VERSION=2.3.1 \
     UID=1000 GID=1000 \
     RAILS_SERVE_STATIC_FILES=true \
     RAILS_ENV=production NODE_ENV=production \
-    YARN_VERSION=1.5.1 \
-    YARN_DOWNLOAD_SHA256=cd31657232cf48d57fdbff55f38bfa058d2fb4950450bd34af72dac796af4de1 \
     LIBICONV_VERSION=1.15 \
     LIBICONV_DOWNLOAD_SHA256=ccf536620a45458d26ba83887a983b96827001e92a13847b45e4925cc8913178
 
@@ -49,13 +47,7 @@ RUN apk --no-cache --update add --virtual build-deps \
       su-exec \
       patch \
     \
- && mkdir -p /tmp/src /opt \
- && wget -O yarn.tar.gz "https://github.com/yarnpkg/yarn/releases/download/v$YARN_VERSION/yarn-v$YARN_VERSION.tar.gz" \
- && echo "$YARN_DOWNLOAD_SHA256 *yarn.tar.gz" | sha256sum -c - \
- && tar -xzf yarn.tar.gz -C /tmp/src \
- && rm yarn.tar.gz \
- && mv /tmp/src/yarn-v$YARN_VERSION /opt/yarn \
- && ln -s /opt/yarn/bin/yarn /usr/local/bin/yarn \
+ && mkdir -p /tmp/src \
  && wget -O libiconv.tar.gz https://ftp.gnu.org/pub/gnu/libiconv/libiconv-${LIBICONV_VERSION}.tar.gz \
  && echo "${LIBICONV_DOWNLOAD_SHA256} *libiconv.tar.gz" | sha256sum -c - \
  && tar -xzf libiconv.tar.gz -C /tmp/src \
