@@ -1,4 +1,4 @@
-FROM ruby:2.5.0-alpine3.7
+FROM ruby:2.4.3-alpine3.6
 
 LABEL maintainer="https://github.com/ailispaw/mastodon-barge" \
       description="Your self-hosted, globally interconnected microblogging community"
@@ -10,24 +10,27 @@ RUN apk -U upgrade \
       ca-certificates \
       ffmpeg \
       file \
+      git \
       icu-libs \
       imagemagick \
       libidn \
       libpq \
       nodejs \
+      nodejs-npm \
       protobuf \
       tini \
       tzdata \
-      yarn \
     \
  && update-ca-certificates \
     \
  && rm -rf /tmp/* /var/cache/apk/*
 
-ENV MASTODON_VERSION=2.3.1 \
+ENV MASTODON_VERSION=2.3.2 \
     UID=1000 GID=1000 \
     RAILS_SERVE_STATIC_FILES=true \
     RAILS_ENV=production NODE_ENV=production \
+    YARN_VERSION=1.3.2 \
+    YARN_DOWNLOAD_SHA256=6cfe82e530ef0837212f13e45c1565ba53f5199eec2527b85ecbcd88bf26821d \
     LIBICONV_VERSION=1.15 \
     LIBICONV_DOWNLOAD_SHA256=ccf536620a45458d26ba83887a983b96827001e92a13847b45e4925cc8913178
 
@@ -47,7 +50,13 @@ RUN apk --no-cache --update add --virtual build-deps \
       su-exec \
       patch \
     \
- && mkdir -p /tmp/src \
+ && mkdir -p /tmp/src /opt \
+ && wget -O yarn.tar.gz "https://github.com/yarnpkg/yarn/releases/download/v$YARN_VERSION/yarn-v$YARN_VERSION.tar.gz" \
+ && echo "$YARN_DOWNLOAD_SHA256 *yarn.tar.gz" | sha256sum -c - \
+ && tar -xzf yarn.tar.gz -C /tmp/src \
+ && rm yarn.tar.gz \
+ && mv /tmp/src/yarn-v$YARN_VERSION /opt/yarn \
+ && ln -s /opt/yarn/bin/yarn /usr/local/bin/yarn \
  && wget -O libiconv.tar.gz https://ftp.gnu.org/pub/gnu/libiconv/libiconv-${LIBICONV_VERSION}.tar.gz \
  && echo "${LIBICONV_DOWNLOAD_SHA256} *libiconv.tar.gz" | sha256sum -c - \
  && tar -xzf libiconv.tar.gz -C /tmp/src \
