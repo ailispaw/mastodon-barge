@@ -79,6 +79,7 @@ RUN apk --no-cache --update add --virtual build-deps \
  && adduser -h /mastodon -s /bin/sh -D -G mastodon -u ${UID} mastodon \
  && chown -R mastodon:mastodon . \
     \
+ && su-exec mastodon:mastodon bundle config build.nokogiri --with-iconv-lib=/usr/local/lib --with-iconv-include=/usr/local/include \
  && su-exec mastodon:mastodon bundle install -j$(getconf _NPROCESSORS_ONLN) --deployment --without test development \
  && su-exec mastodon:mastodon yarn --pure-lockfile \
     \
