@@ -1,4 +1,4 @@
-From c8a22081e2a293666884ddc97c3c16a5359faee4 Mon Sep 17 00:00:00 2001
+From 9f377541142f90e7ee9df1b978db17bd62764f8b Mon Sep 17 00:00:00 2001
 From: "A.I" <ailis@paw.zone>
 Date: Tue, 9 Jan 2018 19:09:49 -0800
 Subject: [PATCH] Revert "Fix force_ssl conditional (#6201)"
@@ -11,10 +11,10 @@ This reverts commit 1d92b90be9f494d90a6f79f53be9cca68562867e.
  3 files changed, 14 insertions(+), 10 deletions(-)
 
 diff --git a/app/controllers/application_controller.rb b/app/controllers/application_controller.rb
-index 6e504261..1b76b0d0 100644
+index 5b22f17c6..5f1347bd3 100644
 --- a/app/controllers/application_controller.rb
 +++ b/app/controllers/application_controller.rb
-@@ -31,7 +31,7 @@ class ApplicationController < ActionController::Base
+@@ -32,7 +32,7 @@ class ApplicationController < ActionController::Base
    private
  
    def https_enabled?
@@ -24,7 +24,7 @@ index 6e504261..1b76b0d0 100644
  
    def store_current_location
 diff --git a/spec/controllers/application_controller_spec.rb b/spec/controllers/application_controller_spec.rb
-index 51c0e3c7..6a54a78c 100644
+index c6c78d3f7..6d067eca7 100644
 --- a/spec/controllers/application_controller_spec.rb
 +++ b/spec/controllers/application_controller_spec.rb
 @@ -47,18 +47,22 @@ describe ApplicationController, type: :controller do
@@ -36,11 +36,11 @@ index 51c0e3c7..6a54a78c 100644
      routes.draw { get 'success' => 'anonymous#success' }
 -    allow(Rails.env).to receive(:production?).and_return(false)
 -    get 'success'
--    expect(response).to have_http_status(:success)
+-    expect(response).to have_http_status(200)
 +    ClimateControl.modify LOCAL_HTTPS: '' do
 +      allow(Rails.env).to receive(:production?).and_return(true)
 +      get 'success'
-+      expect(response).to have_http_status(:success)
++      expect(response).to have_http_status(200)
 +    end
    end
  
@@ -59,7 +59,7 @@ index 51c0e3c7..6a54a78c 100644
  
    describe 'helper_method :current_account' do
 diff --git a/spec/rails_helper.rb b/spec/rails_helper.rb
-index dc1f32e0..720e0639 100644
+index c575128e4..6394c7425 100644
 --- a/spec/rails_helper.rb
 +++ b/spec/rails_helper.rb
 @@ -46,7 +46,7 @@ RSpec.configure do |config|

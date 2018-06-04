@@ -1,4 +1,4 @@
-From 2751ccb9279d2e1537fdd00ffb1d663db79395ae Mon Sep 17 00:00:00 2001
+From 8bcec9e41b5d30d07fe8599e1142e6a5f642e166 Mon Sep 17 00:00:00 2001
 From: "A.I" <ailis@paw.zone>
 Date: Sat, 6 Jan 2018 10:42:56 -0800
 Subject: [PATCH] Revert "enforce LOCAL_HTTPS=true in production (#6061)"
@@ -10,7 +10,7 @@ This reverts commit 9592b5e31e19ce470252ade7b8df73625e2592e6.
  2 files changed, 3 insertions(+), 5 deletions(-)
 
 diff --git a/.env.production.sample b/.env.production.sample
-index 579ad667..d79cadd1 100644
+index 24b6b0143..725b0a3f6 100644
 --- a/.env.production.sample
 +++ b/.env.production.sample
 @@ -15,11 +15,10 @@ DB_PORT=5432
@@ -28,7 +28,7 @@ index 579ad667..d79cadd1 100644
  # Use this only if you need to run mastodon on a different domain than the one used for federation.
  # You can read more about this option on https://github.com/tootsuite/documentation/blob/master/Running-Mastodon/Serving_a_different_domain.md
 diff --git a/config/initializers/ostatus.rb b/config/initializers/ostatus.rb
-index 5773b729..bb8591f7 100644
+index 5773b7290..bb8591f74 100644
 --- a/config/initializers/ostatus.rb
 +++ b/config/initializers/ostatus.rb
 @@ -3,12 +3,11 @@

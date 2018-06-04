@@ -1,4 +1,4 @@
-FROM ruby:2.4.3-alpine3.6
+FROM ruby:2.4.4-alpine3.6
 
 LABEL maintainer="https://github.com/ailispaw/mastodon-barge" \
       description="Your self-hosted, globally interconnected microblogging community"
@@ -25,7 +25,7 @@ RUN apk -U upgrade \
     \
  && rm -rf /tmp/* /var/cache/apk/*
 
-ENV MASTODON_VERSION=2.3.3 \
+ENV MASTODON_VERSION=2.4.0 \
     UID=1000 GID=1000 \
     RAILS_SERVE_STATIC_FILES=true \
     RAILS_ENV=production NODE_ENV=production \

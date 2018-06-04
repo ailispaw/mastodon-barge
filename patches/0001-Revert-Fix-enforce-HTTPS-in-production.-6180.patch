@@ -1,4 +1,4 @@
-From 8d01e305da11b1633107fedbbbdeec7d720fe106 Mon Sep 17 00:00:00 2001
+From 6bf25bd62c33bdb73a8f24cb350ba2fa9b09697a Mon Sep 17 00:00:00 2001
 From: "A.I" <ailis@paw.zone>
 Date: Sat, 6 Jan 2018 10:42:09 -0800
 Subject: [PATCH] Revert "Fix enforce HTTPS in production. (#6180)"
@@ -9,7 +9,7 @@ This reverts commit 8d51ce429094d43a91d61c9cb0c0dc7b1e6bd2de.
  1 file changed, 1 insertion(+), 1 deletion(-)
 
 diff --git a/config/initializers/session_store.rb b/config/initializers/session_store.rb
-index 3dc0edd6..ef61543a 100644
+index 3dc0edd6f..ef61543a8 100644
 --- a/config/initializers/session_store.rb
 +++ b/config/initializers/session_store.rb
 @@ -1,3 +1,3 @@
