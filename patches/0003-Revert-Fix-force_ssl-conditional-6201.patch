@@ -1,4 +1,4 @@
-From 9f377541142f90e7ee9df1b978db17bd62764f8b Mon Sep 17 00:00:00 2001
+From 0066801ae46c80ea98c51bf91d414d0fadb33a8e Mon Sep 17 00:00:00 2001
 From: "A.I" <ailis@paw.zone>
 Date: Tue, 9 Jan 2018 19:09:49 -0800
 Subject: [PATCH] Revert "Fix force_ssl conditional (#6201)"
@@ -11,10 +11,10 @@ This reverts commit 1d92b90be9f494d90a6f79f53be9cca68562867e.
  3 files changed, 14 insertions(+), 10 deletions(-)
 
 diff --git a/app/controllers/application_controller.rb b/app/controllers/application_controller.rb
-index 5b22f17c6..5f1347bd3 100644
+index 29ba6cad6..803520a36 100644
 --- a/app/controllers/application_controller.rb
 +++ b/app/controllers/application_controller.rb
-@@ -32,7 +32,7 @@ class ApplicationController < ActionController::Base
+@@ -33,7 +33,7 @@ class ApplicationController < ActionController::Base
    private
  
    def https_enabled?

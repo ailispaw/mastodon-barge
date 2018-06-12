@@ -1,4 +1,4 @@
-From 6bf25bd62c33bdb73a8f24cb350ba2fa9b09697a Mon Sep 17 00:00:00 2001
+From eba74871c8a914bafb277ebb70d88112dbc67eee Mon Sep 17 00:00:00 2001
 From: "A.I" <ailis@paw.zone>
 Date: Sat, 6 Jan 2018 10:42:09 -0800
 Subject: [PATCH] Revert "Fix enforce HTTPS in production. (#6180)"
