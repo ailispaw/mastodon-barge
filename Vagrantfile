@@ -52,16 +52,16 @@ Vagrant.configure(2) do |config|
       cd /opt/mastodon
       cp /vagrant/.env.production .
 
-      PAPERCLIP_SECRET=$(docker-compose run --rm web ./bin/rails secret)
+      PAPERCLIP_SECRET=$(docker-compose run --rm web rake secret)
       sed -i 's/^PAPERCLIP_SECRET=$/PAPERCLIP_SECRET='${PAPERCLIP_SECRET}'/g' .env.production
 
-      SECRET_KEY_BASE=$(docker-compose run --rm web ./bin/rails secret)
+      SECRET_KEY_BASE=$(docker-compose run --rm web rake secret)
       sed -i 's/^SECRET_KEY_BASE=$/SECRET_KEY_BASE='${SECRET_KEY_BASE}'/g' .env.production
 
-      OTP_SECRET=$(docker-compose run --rm web ./bin/rails secret)
+      OTP_SECRET=$(docker-compose run --rm web rake secret)
       sed -i 's/^OTP_SECRET=$/OTP_SECRET='${OTP_SECRET}'/g' .env.production
 
-      docker-compose run --rm web ./bin/rails mastodon:webpush:generate_vapid_key >> .env.production
+      docker-compose run --rm web rake mastodon:webpush:generate_vapid_key >> .env.production
     EOT
   end
 
@@ -78,8 +78,8 @@ Vagrant.configure(2) do |config|
       mkdir -p public/packs
       chown -R 1000:1000 public/packs
 
-      docker-compose run --rm web ./bin/rails db:migrate
-      docker-compose run --rm web ./bin/rails assets:precompile
+      docker-compose run --rm web rails db:migrate
+      docker-compose run --rm web rails assets:precompile
     EOT
   end
 
