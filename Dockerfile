@@ -25,8 +25,9 @@ RUN apk -U upgrade \
     \
  && rm -rf /tmp/* /var/cache/apk/*
 
-ENV MASTODON_VERSION=2.4.2 \
+ENV MASTODON_VERSION=2.4.3 \
     UID=1000 GID=1000 \
+    PATH=/mastodon/bin:$PATH \
     RAILS_SERVE_STATIC_FILES=true \
     RAILS_ENV=production NODE_ENV=production \
     YARN_VERSION=1.3.2 \
@@ -57,6 +58,7 @@ RUN apk --no-cache --update add --virtual build-deps \
  && rm yarn.tar.gz \
  && mv /tmp/src/yarn-v$YARN_VERSION /opt/yarn \
  && ln -s /opt/yarn/bin/yarn /usr/local/bin/yarn \
+ && ln -s /opt/yarn/bin/yarnpkg /usr/local/bin/yarnpkg \
  && wget -O libiconv.tar.gz https://ftp.gnu.org/pub/gnu/libiconv/libiconv-${LIBICONV_VERSION}.tar.gz \
  && echo "${LIBICONV_DOWNLOAD_SHA256} *libiconv.tar.gz" | sha256sum -c - \
  && tar -xzf libiconv.tar.gz -C /tmp/src \
