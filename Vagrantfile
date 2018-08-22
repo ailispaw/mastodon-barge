@@ -24,10 +24,10 @@ Vagrant.configure(2) do |config|
       set -e
 
       wget -q -O /opt/bin/docker-compose \
-        https://github.com/docker/compose/releases/download/1.21.2/docker-compose-Linux-x86_64
+        https://github.com/docker/compose/releases/download/1.22.0/docker-compose-Linux-x86_64
       chmod +x /opt/bin/docker-compose
 
-      /etc/init.d/docker restart v18.05.0-ce
+      /etc/init.d/docker restart v18.06.1-ce
     EOT
   end
 
