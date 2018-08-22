@@ -25,7 +25,7 @@ RUN apk -U upgrade \
     \
  && rm -rf /tmp/* /var/cache/apk/*
 
-ENV MASTODON_VERSION=2.4.3 \
+ENV MASTODON_VERSION=2.4.4 \
     UID=1000 GID=1000 \
     PATH=/mastodon/bin:$PATH \
     RAILS_SERVE_STATIC_FILES=true \
