@@ -85,12 +85,16 @@ services:
   mailcatcher:
     image: yappabe/mailcatcher
     restart: always
+    entrypoint: /dumb-init
+    command: /run.sh
     networks:
       - external_network
       - internal_network
     ports:
       - "1025:1025"
       - "1080:1080"
+    volumes:
+      - /usr/bin/dumb-init:/dumb-init:ro
 
 networks:
   external_network:
