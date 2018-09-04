@@ -73,13 +73,8 @@ Vagrant.configure(2) do |config|
 
       mkdir -p public/system
       chown -R 1000:1000 public/system
-      mkdir -p public/assets
-      chown -R 1000:1000 public/assets
-      mkdir -p public/packs
-      chown -R 1000:1000 public/packs
 
-      docker-compose run --rm web rails db:migrate
-      docker-compose run --rm web rails assets:precompile
+      SKIP_POST_DEPLOYMENT_MIGRATIONS=true docker-compose run --rm web rails db:migrate
     EOT
   end
 
@@ -89,6 +84,8 @@ Vagrant.configure(2) do |config|
 
       cd /opt/mastodon
       docker-compose up -d
+
+      docker-compose run --rm web rails db:migrate
     EOT
   end
 end

@@ -1,4 +1,4 @@
-From 0066801ae46c80ea98c51bf91d414d0fadb33a8e Mon Sep 17 00:00:00 2001
+From fc5afc6438a7ebe256abc6d1eb2cecc9641ceac8 Mon Sep 17 00:00:00 2001
 From: "A.I" <ailis@paw.zone>
 Date: Tue, 9 Jan 2018 19:09:49 -0800
 Subject: [PATCH] Revert "Fix force_ssl conditional (#6201)"
@@ -11,7 +11,7 @@ This reverts commit 1d92b90be9f494d90a6f79f53be9cca68562867e.
  3 files changed, 14 insertions(+), 10 deletions(-)
 
 diff --git a/app/controllers/application_controller.rb b/app/controllers/application_controller.rb
-index 29ba6cad6..803520a36 100644
+index d266fa1bd..a2254286d 100644
 --- a/app/controllers/application_controller.rb
 +++ b/app/controllers/application_controller.rb
 @@ -33,7 +33,7 @@ class ApplicationController < ActionController::Base
@@ -24,7 +24,7 @@ index 29ba6cad6..803520a36 100644
  
    def store_current_location
 diff --git a/spec/controllers/application_controller_spec.rb b/spec/controllers/application_controller_spec.rb
-index c6c78d3f7..6d067eca7 100644
+index d158625e6..30f745aed 100644
 --- a/spec/controllers/application_controller_spec.rb
 +++ b/spec/controllers/application_controller_spec.rb
 @@ -47,18 +47,22 @@ describe ApplicationController, type: :controller do

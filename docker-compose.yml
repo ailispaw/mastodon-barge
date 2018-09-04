@@ -46,8 +46,6 @@ services:
       - redis
 #      - es
     volumes:
-      - ./public/assets:/mastodon/public/assets
-      - ./public/packs:/mastodon/public/packs
       - ./public/system:/mastodon/public/system
 
   streaming:
@@ -70,7 +68,7 @@ services:
     image: ailispaw/mastodon
     restart: always
     env_file: .env.production
-    command: bundle exec sidekiq -q default -q mailers -q pull -q push
+    command: bundle exec sidekiq -q default -q push -q mailers -q pull
     depends_on:
       - db
       - redis
@@ -79,7 +77,6 @@ services:
       - external_network
       - internal_network
     volumes:
-      - ./public/packs:/mastodon/public/packs
       - ./public/system:/mastodon/public/system
 
   mailcatcher:

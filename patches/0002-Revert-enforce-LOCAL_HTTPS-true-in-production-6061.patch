@@ -1,4 +1,4 @@
-From 87e3736419002ca6db148cc76c3bec6c315b492c Mon Sep 17 00:00:00 2001
+From a803bca8bc7e12d8b79e9c1245fd69d9fabc1ba0 Mon Sep 17 00:00:00 2001
 From: "A.I" <ailis@paw.zone>
 Date: Sat, 6 Jan 2018 10:42:56 -0800
 Subject: [PATCH] Revert "enforce LOCAL_HTTPS=true in production (#6061)"
@@ -10,7 +10,7 @@ This reverts commit 9592b5e31e19ce470252ade7b8df73625e2592e6.
  2 files changed, 3 insertions(+), 5 deletions(-)
 
 diff --git a/.env.production.sample b/.env.production.sample
-index 3047f7595..39db64131 100644
+index d1164efdc..5b5d598f8 100644
 --- a/.env.production.sample
 +++ b/.env.production.sample
 @@ -15,11 +15,10 @@ DB_PORT=5432
